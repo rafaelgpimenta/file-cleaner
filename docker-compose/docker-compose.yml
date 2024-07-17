@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  # wiremock:
+  #   image: "wiremock/wiremock"
+  #   volumes:
+  #     - ./wiremock/__files:/home/wiremock/__files
+  #     - ./wiremock/mappings:/home/wiremock/mappings
+  #   ports:
+  #     - "9999:8080"
+  #   command: --verbose --disable-banner
+  mysql:
+    image: mysql:5.7.36
+    volumes:
+      - ./mysql/manual-creation.sql:/docker-entrypoint-initdb.d/manual-creation.sql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_password
+      MYSQL_DATABASE: file_cleaner
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: mysql_password
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./localstack/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - "./localstack/wikipedia.png:/home/localstack/wikipedia.png"
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.66.47.0/24
+          gateway: 10.66.47.1

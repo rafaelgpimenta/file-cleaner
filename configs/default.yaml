@@ -1,0 +1,14 @@
+aws:
+  endpoint:
+    # pattern __name and __value from internal/lib/config/config.go#processEnvOverride
+    __name: AWS_ENDPOINT
+    __value: http://localhost:4566
+  # pattern ${ENV_NAME|default-value} from github.com/gookit/config
+  region: ${AWS_REGION|us-east-1}
+  # access key and secret is defined using env vars (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY)
+  # https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials
+mySQL:
+  host: ${MYSQL_HOST|localhost:3306}
+  user: ${MYSQL_USER|mysql_user}
+  password: ${MYSQL_PASSWORD|mysql_password}
+  dbName: ${MYSQL_DBNAME|file_cleaner}

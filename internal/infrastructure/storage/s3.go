@@ -24,6 +24,11 @@ func NewS3Client(region string, endpoint string) (*S3, error) {
 		o.UsePathStyle = true
 		o.BaseEndpoint = aws.String(endpoint)
 	})
+
+	_, err = client.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
+	if err != nil {
+		return nil, err
+	}
 	return &S3{client: client}, nil
 }
 

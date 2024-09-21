@@ -16,6 +16,7 @@ require (
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/goccy/go-yaml v1.12.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/gookit/color v1.5.4 // indirect
 	github.com/gookit/goutil v0.6.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect

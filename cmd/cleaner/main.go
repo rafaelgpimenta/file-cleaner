@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"file-cleaner/internal/application"
 	"file-cleaner/internal/infrastructure/database"
 	"file-cleaner/internal/infrastructure/storage"
 	"file-cleaner/internal/lib/config"
 	"file-cleaner/internal/lib/crontab"
 	"file-cleaner/internal/lib/logger"
+
+	"github.com/google/uuid"
 )
 
 type AWSConfig struct {
@@ -50,11 +53,12 @@ func main() {
 	cleaner := application.NewCleaner(db, s3)
 
 	crontab.RunEveryMinute(func() {
-		err := cleaner.CleanExpiredFiles()
+		traceId := uuid.New().String()
+		ctx := context.WithValue(context.Background(), "traceId", traceId)
+
+		err := cleaner.CleanExpiredFiles(ctx)
 		if err != nil {
-			logger.Error().
-				Err(err).
-				Msg("Error cleaning expired files")
+			logger.Error().Ctx(ctx).Err(err).Msg("Error cleaning expired files")
 		}
 	})
 

@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"file-cleaner/internal/lib/tracinghook"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -10,7 +11,8 @@ import (
 var Logger zerolog.Logger
 
 func init() {
-	Logger = zerolog.New(os.Stdout).With().Timestamp().Logger()
+	Logger = zerolog.New(os.Stdout).With().
+		Timestamp().Logger().Hook(tracinghook.TracingHook{})
 
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 

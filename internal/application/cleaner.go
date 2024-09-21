@@ -1,6 +1,7 @@
 package application
 
 import (
+	"context"
 	"file-cleaner/internal/domain/interfaces"
 	"file-cleaner/internal/lib/logger"
 )
@@ -17,18 +18,18 @@ func NewCleaner(db interfaces.Database, s3 interfaces.Storage) *Cleaner {
 	}
 }
 
-func (c *Cleaner) CleanExpiredFiles() error {
+func (c *Cleaner) CleanExpiredFiles(ctx context.Context) error {
 	files, err := c.db.GetExpiredFiles()
 	if err != nil {
 		return err
 	}
 
-	logger.Info().
+	logger.Info().Ctx(ctx).
 		Int("files", len(files)).
 		Msg("Total expired files")
 
 	for _, file := range files {
-		logger.Info().
+		logger.Info().Ctx(ctx).
 			Int64("ID", file.ID).
 			Str("Bucket", file.Bucket).
 			Str("s3Key", file.S3Key).
@@ -39,7 +40,7 @@ func (c *Cleaner) CleanExpiredFiles() error {
 			return err
 		}
 
-		logger.Info().
+		logger.Info().Ctx(ctx).
 			Int64("ID", file.ID).
 			Str("Bucket", file.Bucket).
 			Str("s3Key", file.S3Key).
@@ -50,7 +51,7 @@ func (c *Cleaner) CleanExpiredFiles() error {
 			return err
 		}
 
-		logger.Info().
+		logger.Info().Ctx(ctx).
 			Int64("ID", file.ID).
 			Str("Bucket", file.Bucket).
 			Str("s3Key", file.S3Key).

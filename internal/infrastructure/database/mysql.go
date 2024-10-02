@@ -30,6 +30,11 @@ func NewMySQLConnection(host, user, password, dbName string) (*MySQL, error) {
 		return nil, err
 	}
 
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+
 	return &MySQL{db: db}, nil
 }
 

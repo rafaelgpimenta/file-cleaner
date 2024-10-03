@@ -1,7 +1,15 @@
 # File Cleaner
 The application runs a routine to delete files from S3. I created it to explore the fundamentals of the Go language.
 
+## Build
+
+```bash
+go build cmd/cleaner/main.go
+```
+
 ## Run
+
+### Using your Go setup
 
 Keeps dependencies running after execution
 ```bash
@@ -13,8 +21,14 @@ Removes dependencies after execution
 ./scripts/start-app.sh
 ```
 
-## Build
+### Using docker compose
 
 ```bash
-go build cmd/cleaner/main.go
+# starts cleaner application with dependencies
+docker compose -f docker-compose/docker-compose.yml up -d
+```
+
+```bash
+# removes containers
+docker compose -f docker-compose/docker-compose.yml down
 ```

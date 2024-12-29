@@ -11,14 +11,14 @@ import (
 	"github.com/gookit/config/v2/yaml"
 )
 
+const CONFIG_DIR string = "configs"
+
 func init() {
 	// config.ParseEnv: will parse env var in string value. eg: shell: ${SHELL}
 	config.WithOptions(config.ParseEnv)
 
 	// Add driver for support yaml content
 	config.AddDriver(yaml.Driver)
-
-	const CONFIG_DIR string = "configs"
 
 	// Load default config
 	err := config.LoadFiles(fmt.Sprintf("%s/default.yaml", CONFIG_DIR))
